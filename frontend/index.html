@@ -23,7 +23,7 @@
             </div>
             <ul>
                 <li><a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
-                <li><a href="#"><i class="fas fa-compass"></i><span>Explore</span></a></li>
+                <li><a href="boards.html"><i class="fas fa-compass"></i><span>Boards</span></a></li>
                 <li><a href="#"><i class="fas fa-bookmark"></i><span>Bookmarks</span></a></li>
                 <li><a href="#"><i class="fas fa-heart"></i><span>Likes</span></a></li>
                 <li><a href="#"><i class="fas fa-user"></i><span>Profile</span></a></li>
@@ -82,6 +82,9 @@
                     <h2>What's new?</h2>
                     <form id="postForm" class="post-form">
                         <div class="post-inputs">
+                            <select id="board" required class="board-select">
+                                <option value="">Select a Board</option>
+                            </select>
                             <input type="text" id="title" placeholder="Post Title" required>
                             <textarea id="content" placeholder="Share your thoughts..." required></textarea>
                         </div>

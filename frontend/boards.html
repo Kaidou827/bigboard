@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boards - BigBoard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <img src="assets/Icons/Icon-white.png" alt="BigBoard">
+            </div>
+        </header>
+
+        <!-- Left Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/Icons/Icon-white.png" alt="BigBoard" class="logo">
+            </div>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i><span>Home</span></a></li>
+                <li><a href="boards.html" class="active"><i class="fas fa-compass"></i><span>Boards</span></a></li>
+                <li><a href="#"><i class="fas fa-bookmark"></i><span>Bookmarks</span></a></li>
+                <li><a href="#"><i class="fas fa-heart"></i><span>Likes</span></a></li>
+                <li><a href="#"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                <!-- Auth links -->
+                <li class="auth-links">
+                    <!-- Show when not logged in -->
+                    <div id="login-register">
+                        <a href="#" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i>Login</a>
+                        <a href="#" onclick="showRegisterModal()" class="register-link"><i class="fas fa-user-plus"></i>Register</a>
+                    </div>
+                    <!-- Show when logged in -->
+                    <div id="user-info" style="display: none;">
+                        <span id="username" class="username"></span>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                    </div>
+                </li>
+            </ul>
+            
+            <!-- Add a spacer and settings at bottom -->
+            <div style="flex-grow: 1;"></div>
+            <ul>
+                <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="boards-header">
+                <h1>Boards</h1>
+                <p>Join your favorite communities</p>
+            </div>
+
+            <div class="boards-grid" id="boards-container">
+                <!-- Boards will be loaded dynamically -->
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="trending-sidebar">
+            <div class="stats-card">
+                <h3>Statistics</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Total Boards</span>
+                    <span class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Total Posts</span>
+                    <span class="stat-value">0</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Include the same modals and scripts as index.html -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/boards.js"></script>
+</body>
+</html> 

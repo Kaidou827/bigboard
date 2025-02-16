@@ -30,6 +30,8 @@ function displayPosts(posts) {
     postsContainer.innerHTML = '';
     // Sort posts by date, newest first
     const sortedPosts = posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    // Update post counter
+    document.getElementById('post-counter').textContent = sortedPosts.length;
     console.log('Posts with IDs:', sortedPosts.map(p => ({ id: p._id, title: p.title })));
     sortedPosts.forEach(post => addPostToDOM(post));
 }
@@ -56,15 +58,20 @@ function createPostElement(post) {
     postDiv.className = 'post';
     postDiv.dataset.postId = post._id;
     
-    // Add click handler with logging
+    // Add click handler
     postDiv.onclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Clicked post with ID:', post._id); // Debug log
         showPostView(post._id);
     };
     
-    // Make sure post actions don't trigger the post view
+    // Add image HTML if post has an image
+    const imageHtml = post.image ? `
+        <div class="post-image">
+            <img src="${post.image}" alt="Post image">
+        </div>
+    ` : '';
+    
     const actionsHtml = `
         <div class="post-actions" onclick="event.stopPropagation()">
             <button class="action-btn vote-btn" onclick="event.stopPropagation(); handleVote('${post._id}')">
@@ -89,6 +96,7 @@ function createPostElement(post) {
         </div>
         <h3>${post.title}</h3>
         <p>${post.content}</p>
+        ${imageHtml}
         ${actionsHtml}
     `;
     
@@ -121,6 +129,7 @@ document.getElementById('postForm').addEventListener('submit', async (e) => {
     formData.append('title', document.getElementById('title').value);
     formData.append('content', document.getElementById('content').value);
     formData.append('author', document.getElementById('author').value || 'Anonymous');
+    formData.append('board', document.getElementById('board').value);
     
     const imageFile = document.getElementById('image').files[0];
     if (imageFile) {
@@ -241,10 +250,14 @@ async function loadPostDetails(postId) {
 
 // Add functions to display post detail and replies
 function displayPostDetail(post) {
-    console.log('Displaying post detail:', post); // Debug log
     const postDetail = document.getElementById('post-detail');
     
-    // Create a non-clickable version of the post
+    const imageHtml = post.image ? `
+        <div class="post-image">
+            <img src="${post.image}" alt="Post image">
+        </div>
+    ` : '';
+    
     const postHtml = `
         <div class="post">
             <div class="post-header">
@@ -253,6 +266,7 @@ function displayPostDetail(post) {
             </div>
             <h3>${post.title}</h3>
             <p>${post.content}</p>
+            ${imageHtml}
             <div class="post-actions">
                 <button class="action-btn vote-btn" onclick="handleVote('${post._id}')">
                     <i class="fas fa-arrow-up"></i> ${post.votes || 0}
@@ -344,4 +358,135 @@ document.getElementById('replyForm').addEventListener('submit', async (e) => {
     } catch (error) {
         console.error('Error creating reply:', error);
     }
+});
+
+// Modal functions
+function showLoginModal() {
+    document.getElementById('login-modal').classList.add('active');
+}
+
+function showRegisterModal() {
+    document.getElementById('register-modal').classList.add('active');
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.classList.remove('active');
+    }
+}
+
+// Handle login form submission
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+
+    try {
+        const response = await fetch(`${API_URL}/users/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (response.ok) {
+            const user = await response.json();
+            localStorage.setItem('user', JSON.stringify(user));
+            updateAuthUI(user);
+            document.getElementById('login-modal').classList.remove('active');
+            document.getElementById('login-form').reset();
+        } else {
+            const error = await response.json();
+            alert(error.message);
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('Error logging in');
+    }
+});
+
+// Handle register form submission
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('register-username').value;
+    const password = document.getElementById('register-password').value;
+
+    try {
+        const response = await fetch(`${API_URL}/users/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        if (response.ok) {
+            const user = await response.json();
+            localStorage.setItem('user', JSON.stringify(user));
+            updateAuthUI(user);
+            document.getElementById('register-modal').classList.remove('active');
+            document.getElementById('register-form').reset();
+        } else {
+            const error = await response.json();
+            alert(error.message);
+        }
+    } catch (error) {
+        console.error('Register error:', error);
+        alert('Error registering');
+    }
+});
+
+// Update UI based on auth state
+function updateAuthUI(user) {
+    const loginRegister = document.getElementById('login-register');
+    const userInfo = document.getElementById('user-info');
+    const username = document.getElementById('username');
+
+    if (user) {
+        loginRegister.style.display = 'none';
+        userInfo.style.display = 'block';
+        username.textContent = user.username;
+    } else {
+        loginRegister.style.display = 'block';
+        userInfo.style.display = 'none';
+        username.textContent = '';
+    }
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('user');
+    updateAuthUI(null);
+}
+
+// Check auth state on page load
+const user = JSON.parse(localStorage.getItem('user'));
+if (user) {
+    updateAuthUI(user);
+}
+
+// Load boards into selector
+async function loadBoardSelector() {
+    try {
+        const response = await fetch(`${API_URL}/boards`);
+        const boards = await response.json();
+        const selector = document.getElementById('board');
+        
+        boards.forEach(board => {
+            const option = document.createElement('option');
+            option.value = board.name;
+            option.textContent = `/${board.name}`;
+            selector.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error loading boards:', error);
+    }
+}
+
+// When page loads
+document.addEventListener('DOMContentLoaded', () => {
+    loadPosts();
+    loadBoardSelector();
 }); 

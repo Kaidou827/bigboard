@@ -15,10 +15,21 @@
             <div class="sidebar-header">
                 <img src="assets/images/logo-white.png" alt="BigBoard" class="logo">
             </div>
+            <div id="auth-section" class="auth-section">
+                <!-- Show when not logged in -->
+                <div id="login-register" class="login-register">
+                    <button onclick="showLoginModal()">Login</button>
+                    <button onclick="showRegisterModal()">Register</button>
+                </div>
+                <!-- Show when logged in -->
+                <div id="user-info" class="user-info" style="display: none;">
+                    <span id="username"></span>
+                    <button onclick="logout()">Logout</button>
+                </div>
+            </div>
             <ul>
                 <li><a href="#" class="active"><i class="fas fa-home"></i>Home</a></li>
                 <li><a href="#"><i class="fas fa-compass"></i>Explore</a></li>
-                <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
                 <li><a href="#"><i class="fas fa-bookmark"></i>Bookmarks</a></li>
                 <li><a href="#"><i class="fas fa-heart"></i>Likes</a></li>
                 <li><a href="#"><i class="fas fa-user"></i>Profile</a></li>
@@ -90,6 +101,13 @@
 
         <!-- Right Sidebar -->
         <aside class="trending-sidebar">
+            <div class="stats-card">
+                <h3>Statistics</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Live Posts</span>
+                    <span id="post-counter" class="stat-value">0</span>
+                </div>
+            </div>
             <div class="trending-boards">
                 <h3>Trending Boards</h3>
                 <ul>
@@ -119,5 +137,28 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- Add at the end of body -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="text" id="login-username" placeholder="Username" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <h2>Register</h2>
+            <form id="register-form">
+                <input type="text" id="register-username" placeholder="Username" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html> 

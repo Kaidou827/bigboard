@@ -10,29 +10,36 @@
 </head>
 <body>
     <div class="main-container">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <div class="mobile-logo">
+                <img src="assets/Icons/Icon-white.png" alt="BigBoard">
+            </div>
+        </header>
         <!-- Left Sidebar -->
         <nav class="sidebar">
             <div class="sidebar-header">
-                <img src="assets/images/logo-white.png" alt="BigBoard" class="logo">
-            </div>
-            <div id="auth-section" class="auth-section">
-                <!-- Show when not logged in -->
-                <div id="login-register" class="login-register">
-                    <button onclick="showLoginModal()">Login</button>
-                    <button onclick="showRegisterModal()">Register</button>
-                </div>
-                <!-- Show when logged in -->
-                <div id="user-info" class="user-info" style="display: none;">
-                    <span id="username"></span>
-                    <button onclick="logout()">Logout</button>
-                </div>
+                <img src="assets/Icons/Icon-white.png" alt="BigBoard" class="logo">
             </div>
             <ul>
-                <li><a href="#" class="active"><i class="fas fa-home"></i>Home</a></li>
-                <li><a href="#"><i class="fas fa-compass"></i>Explore</a></li>
-                <li><a href="#"><i class="fas fa-bookmark"></i>Bookmarks</a></li>
-                <li><a href="#"><i class="fas fa-heart"></i>Likes</a></li>
-                <li><a href="#"><i class="fas fa-user"></i>Profile</a></li>
+                <li><a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
+                <li><a href="#"><i class="fas fa-compass"></i><span>Explore</span></a></li>
+                <li><a href="#"><i class="fas fa-bookmark"></i><span>Bookmarks</span></a></li>
+                <li><a href="#"><i class="fas fa-heart"></i><span>Likes</span></a></li>
+                <li><a href="#"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                <!-- Auth links -->
+                <li class="auth-links">
+                    <!-- Show when not logged in -->
+                    <div id="login-register">
+                        <a href="#" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i>Login</a>
+                        <a href="#" onclick="showRegisterModal()" class="register-link"><i class="fas fa-user-plus"></i>Register</a>
+                    </div>
+                    <!-- Show when logged in -->
+                    <div id="user-info" style="display: none;">
+                        <span id="username" class="username"></span>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                    </div>
+                </li>
             </ul>
             
             <!-- Add a spacer and settings at bottom -->
@@ -74,16 +81,22 @@
                 <div class="post-prompt">
                     <h2>What's new?</h2>
                     <form id="postForm" class="post-form">
-                        <textarea id="content" placeholder="Share your thoughts..." required></textarea>
-                        <div class="image-upload">
-                            <label for="image">
-                                <i class="fas fa-image"></i> Add Image
-                            </label>
-                            <input type="file" id="image" accept="image/*" style="display: none;">
+                        <div class="post-inputs">
+                            <input type="text" id="title" placeholder="Post Title" required>
+                            <textarea id="content" placeholder="Share your thoughts..." required></textarea>
+                        </div>
+                        
+                        <div class="post-options">
+                            <div class="image-upload-section">
+                                <label for="image" class="image-upload-btn">
+                                    <i class="fas fa-image"></i> Add Image
+                                </label>
+                                <input type="file" id="image" accept="image/*" style="display: none;">
+                            </div>
                             <div id="image-preview"></div>
                         </div>
+                        
                         <div class="post-form-footer">
-                            <input type="text" id="title" placeholder="Post Title" required>
                             <input type="text" id="author" placeholder="Author (optional)">
                             <button type="submit">Post</button>
                         </div>

@@ -244,15 +244,26 @@ function displayPostDetail(post) {
 
 function displayReplies(replies) {
     const repliesContainer = document.getElementById('replies');
-    repliesContainer.innerHTML = replies.map(reply => `
-        <div class="reply">
-            <div class="reply-header">
-                <span class="reply-author">${reply.author}</span>
-                <span class="reply-meta">${moment(reply.createdAt).fromNow()}</span>
+    if (!replies || replies.length === 0) {
+        repliesContainer.innerHTML = `
+            <div class="no-replies">
+                <p>No replies yet. Be the first to reply!</p>
             </div>
-            <p>${reply.content}</p>
-        </div>
-    `).join('');
+        `;
+        return;
+    }
+
+    repliesContainer.innerHTML = replies
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map(reply => `
+            <div class="reply">
+                <div class="reply-header">
+                    <span class="reply-author">${reply.author}</span>
+                    <span class="reply-meta">${moment(reply.createdAt).fromNow()}</span>
+                </div>
+                <p>${reply.content}</p>
+            </div>
+        `).join('');
 }
 
 // Handle back/forward browser navigation
@@ -271,4 +282,35 @@ window.onload = function() {
     if (postId) {
         showPostView(postId);
     }
-}; 
+};
+
+// Handle reply form submission
+document.getElementById('replyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const postId = new URLSearchParams(window.location.search).get('post');
+    const formData = {
+        content: document.getElementById('replyContent').value,
+        author: document.getElementById('replyAuthor').value || 'Anonymous'
+    };
+
+    try {
+        const response = await fetch(`${API_URL}/posts/${postId}/reply`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            const updatedPost = await response.json();
+            document.getElementById('replyForm').reset();
+            displayReplies(updatedPost.replies);
+        } else {
+            console.error('Error response:', await response.text());
+        }
+    } catch (error) {
+        console.error('Error creating reply:', error);
+    }
+}); 

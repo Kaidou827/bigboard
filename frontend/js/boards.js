@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:5002/api';
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5002/api'
+    : 'https://bigboard-backend.onrender.com/api';
 
 async function loadBoards() {
     try {

@@ -1,5 +1,12 @@
-const API_URL = 'http://localhost:5002/api';
-const socket = io('http://localhost:5002');
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5002/api'
+    : 'https://bigboard-backend.onrender.com/api';
+
+const SOCKET_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:5002'
+    : 'https://bigboard-backend.onrender.com';
+
+const socket = io(SOCKET_URL);
 const VOTED_POSTS_KEY = 'votedPosts';
 
 // Socket event listeners

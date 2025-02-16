@@ -82,6 +82,9 @@ router.get('/:id', async (req, res) => {
 // Add reply to post
 router.post('/:id/reply', async (req, res) => {
     try {
+        console.log('Adding reply to post:', req.params.id);
+        console.log('Reply data:', req.body);
+
         const post = await Post.findById(req.params.id);
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
@@ -93,9 +96,13 @@ router.post('/:id/reply', async (req, res) => {
         });
 
         const updatedPost = await post.save();
+        console.log('Updated post with reply:', updatedPost);
+        
+        // Emit socket event for real-time updates
         req.app.get('io').emit('postUpdated', updatedPost);
         res.status(201).json(updatedPost);
     } catch (err) {
+        console.error('Error adding reply:', err);
         res.status(400).json({ message: err.message });
     }
 });

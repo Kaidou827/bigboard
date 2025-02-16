@@ -9,14 +9,14 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: ["http://localhost:5001", "https://your-frontend-url.com"],
+        origin: "*",  // Allow all origins during development
         methods: ["GET", "POST", "PATCH"]
     }
 });
 
 // Middleware
 app.use(cors({
-    origin: ["http://localhost:5001", "https://your-frontend-url.com"],
+    origin: "*",  // Allow all origins during development
     methods: ["GET", "POST", "PATCH"]
 }));
 app.use(express.json());
@@ -31,12 +31,10 @@ mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/bigboard', {
     useNewUrlParser: true,
     useUnifiedTopology: true
-});
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once('open', () => {
-    console.log('Connected to MongoDB');
+}).then(() => {
+    console.log('Connected to MongoDB successfully');
+}).catch((err) => {
+    console.error('MongoDB connection error:', err);
 });
 
 // Routes
@@ -60,6 +58,11 @@ app.get('/api/test', async (req, res) => {
             error: error.message
         });
     }
+});
+
+// Add this near your other routes
+app.get('/', (req, res) => {
+    res.json({ status: 'ok', message: 'BigBoard API is running' });
 });
 
 // WebSocket connection handling

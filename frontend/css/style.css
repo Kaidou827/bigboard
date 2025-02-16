@@ -1,0 +1,339 @@
+:root {
+    --accent-color: #0ea5e9; /* Bright sky blue */
+    --accent-hover: #0284c7; /* Slightly darker blue for hover */
+    --bg-primary: #18181b; /* Dark gray background */
+    --bg-secondary: #27272a; /* Slightly lighter gray */
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --border-color: #3f3f46;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: 250px 1fr 300px;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    background-color: var(--bg-secondary);
+    padding: 20px 10px;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    margin-bottom: 40px;
+    padding: 10px 15px;
+}
+
+.logo {
+    height: 32px;
+    width: auto;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    margin-bottom: 4px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin: 2px 4px;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+}
+
+.sidebar a.active {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar i {
+    margin-right: 16px;
+    font-size: 1.25rem;
+    color: inherit;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar a:hover i {
+    color: var(--accent-color);
+}
+
+/* Add active class to Home link by default */
+.sidebar li:first-child a {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Main Content Styles */
+.main-content {
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    padding: 0 20px;
+}
+
+.post-prompt {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.post-prompt h2 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.post-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 15px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    resize: none;
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+}
+
+.post-form textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.post-form-footer {
+    display: flex;
+    gap: 10px;
+}
+
+.post-form-footer input {
+    flex: 1;
+    padding: 10px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+}
+
+.post-form-footer input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.post-form-footer button {
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.post-form-footer button:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Posts Styles */
+.post {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.2s ease;
+}
+
+.post:hover {
+    background-color: var(--bg-secondary);
+    border-color: var(--accent-color);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.post-board {
+    color: var(--accent-color);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.post-meta {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.post-meta a {
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.post-meta a:hover {
+    color: var(--accent-color);
+}
+
+.post h3 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.post p {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.post-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 15px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    color: var(--accent-color);
+    background-color: rgba(14, 165, 233, 0.1);
+}
+
+.action-btn i {
+    font-size: 1rem;
+}
+
+/* Trending Sidebar Styles */
+.trending-sidebar {
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+}
+
+.trending-boards {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.trending-boards h3 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.trending-boards ul {
+    list-style: none;
+    padding: 0;
+}
+
+.trending-boards li {
+    margin-bottom: 15px;
+}
+
+.trending-boards a {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text-primary);
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.trending-boards a:hover {
+    background-color: var(--bg-primary);
+}
+
+.board-name {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.post-count {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .main-container {
+        grid-template-columns: 200px 1fr 250px;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar, .trending-sidebar {
+        display: none;
+    }
+} 

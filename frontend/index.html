@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigBoard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/images/logo-white.png" alt="BigBoard" class="logo">
+            </div>
+            <ul>
+                <li><a href="#" class="active"><i class="fas fa-home"></i>Home</a></li>
+                <li><a href="#"><i class="fas fa-compass"></i>Explore</a></li>
+                <li><a href="#"><i class="fas fa-bell"></i>Notifications</a></li>
+                <li><a href="#"><i class="fas fa-bookmark"></i>Bookmarks</a></li>
+                <li><a href="#"><i class="fas fa-heart"></i>Likes</a></li>
+                <li><a href="#"><i class="fas fa-user"></i>Profile</a></li>
+            </ul>
+            
+            <!-- Add a spacer and settings at bottom -->
+            <div style="flex-grow: 1;"></div>
+            <ul>
+                <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="post-prompt">
+                <h2>What's new?</h2>
+                <form id="postForm" class="post-form">
+                    <textarea id="content" placeholder="Share your thoughts..." required></textarea>
+                    <div class="post-form-footer">
+                        <input type="text" id="title" placeholder="Post Title" required>
+                        <input type="text" id="author" placeholder="Author (optional)">
+                        <button type="submit">Post</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="trending-posts">
+                <h3>Trending Posts</h3>
+                <div class="posts" id="posts">
+                    <!-- Posts will be loaded dynamically -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="trending-sidebar">
+            <div class="trending-boards">
+                <h3>Trending Boards</h3>
+                <ul>
+                    <li>
+                        <a href="#">
+                            <span class="board-name">/technology</span>
+                            <span class="post-count">2.5k posts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="board-name">/gaming</span>
+                            <span class="post-count">1.8k posts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="board-name">/movies</span>
+                            <span class="post-count">1.2k posts</span>
+                        </a>
+                    </li>
+                    <!-- Add more trending boards as needed -->
+                </ul>
+            </div>
+        </aside>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

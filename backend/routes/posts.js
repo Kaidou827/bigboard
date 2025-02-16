@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+const mongoose = require('mongoose');
 
 // Get all posts
 router.get('/', async (req, res) => {
@@ -48,6 +49,52 @@ router.patch('/:id/vote', async (req, res) => {
         const updatedPost = await post.save();
         req.app.get('io').emit('updatePost', updatedPost);
         res.json(updatedPost);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+// Get single post
+router.get('/:id', async (req, res) => {
+    try {
+        console.log('Fetching post with ID:', req.params.id);
+        
+        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+            console.log('Invalid post ID format');
+            return res.status(400).json({ message: 'Invalid post ID format' });
+        }
+        
+        const post = await Post.findById(req.params.id);
+        console.log('Found post:', post);
+        
+        if (!post) {
+            console.log('Post not found');
+            return res.status(404).json({ message: 'Post not found' });
+        }
+        
+        res.json(post);
+    } catch (err) {
+        console.error('Error fetching post:', err);
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// Add reply to post
+router.post('/:id/reply', async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        post.replies.push({
+            content: req.body.content,
+            author: req.body.author || 'Anonymous'
+        });
+
+        const updatedPost = await post.save();
+        req.app.get('io').emit('postUpdated', updatedPost);
+        res.status(201).json(updatedPost);
     } catch (err) {
         res.status(400).json({ message: err.message });
     }

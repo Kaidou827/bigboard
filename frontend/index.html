@@ -33,22 +33,50 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <div class="post-prompt">
-                <h2>What's new?</h2>
-                <form id="postForm" class="post-form">
-                    <textarea id="content" placeholder="Share your thoughts..." required></textarea>
-                    <div class="post-form-footer">
-                        <input type="text" id="title" placeholder="Post Title" required>
-                        <input type="text" id="author" placeholder="Author (optional)">
-                        <button type="submit">Post</button>
-                    </div>
-                </form>
+            <!-- Post View (hidden by default) -->
+            <div id="post-view" style="display: none;">
+                <!-- Back button -->
+                <button onclick="showMainFeed()" class="back-button">
+                    <i class="fas fa-arrow-left"></i> Back to Feed
+                </button>
+
+                <!-- Selected post will be shown here -->
+                <div id="post-detail"></div>
+                
+                <!-- Simple reply form -->
+                <div class="reply-form">
+                    <form id="replyForm" class="post-form">
+                        <textarea id="replyContent" placeholder="Reply..." required></textarea>
+                        <div class="post-form-footer">
+                            <input type="text" id="replyAuthor" placeholder="Name (optional)">
+                            <button type="submit">Reply</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Replies -->
+                <div id="replies" class="replies-thread"></div>
             </div>
 
-            <div class="trending-posts">
-                <h3>Newest Posts</h3>
-                <div class="posts" id="posts">
-                    <!-- Posts will be loaded dynamically -->
+            <!-- Main Feed View -->
+            <div id="main-feed">
+                <div class="post-prompt">
+                    <h2>What's new?</h2>
+                    <form id="postForm" class="post-form">
+                        <textarea id="content" placeholder="Share your thoughts..." required></textarea>
+                        <div class="post-form-footer">
+                            <input type="text" id="title" placeholder="Post Title" required>
+                            <input type="text" id="author" placeholder="Author (optional)">
+                            <button type="submit">Post</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="trending-posts">
+                    <h3>Newest Posts</h3>
+                    <div class="posts" id="posts">
+                        <!-- Posts will be loaded dynamically -->
+                    </div>
                 </div>
             </div>
         </main>

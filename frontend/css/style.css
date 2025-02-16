@@ -333,6 +333,38 @@ body {
     padding-top: 10px;
 }
 
+/* Reply Form and Thread Styles */
+.reply-form {
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--border-color);
+}
+
+.reply-form .post-form textarea {
+    min-height: 40px;
+    font-size: 0.95rem;
+}
+
+.reply-form .post-form-footer {
+    margin-top: 8px;
+}
+
+.reply-form .post-form-footer input {
+    max-width: 150px;
+}
+
+.replies-thread {
+    margin-top: 10px;
+}
+
+/* Post Detail Styles */
+#post-detail .post {
+    border-left: 4px solid var(--accent-color);
+    margin-bottom: 5px;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .main-container {
@@ -348,4 +380,26 @@ body {
     .sidebar, .trending-sidebar {
         display: none;
     }
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 10px 0;
+    margin-bottom: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.back-button:hover {
+    color: var(--accent-color);
+}
+
+.back-button i {
+    font-size: 1.1rem;
 } 

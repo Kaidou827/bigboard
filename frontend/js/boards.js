@@ -1,13 +1,21 @@
-const API_URL = 'https://bigboard-backend.onrender.com/api';
+const API_URL = 'http://localhost:5002/api';
 
 async function loadBoards() {
     try {
+        console.log('Fetching boards...');
         const response = await fetch(`${API_URL}/boards`);
+        console.log('Response:', response);
         const boards = await response.json();
+        console.log('Loaded boards:', boards);
         displayBoards(boards);
         updateStats(boards);
     } catch (error) {
         console.error('Error loading boards:', error);
+        document.getElementById('boards-container').innerHTML = `
+            <div class="error-message">
+                Error loading boards. Please try again later.
+            </div>
+        `;
     }
 }
 

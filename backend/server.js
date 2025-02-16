@@ -50,15 +50,31 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/bigboard', {
     useUnifiedTopology: true
 }).then(() => {
     console.log('Connected to MongoDB successfully');
+    // Start server AFTER MongoDB connects
+    const PORT = process.env.PORT || 5001;
+    httpServer.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    }).on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`Port ${PORT} is busy, trying ${PORT + 1}`);
+            httpServer.listen(PORT + 1);
+        } else {
+            console.error('Server error:', err);
+        }
+    });
 }).catch((err) => {
     console.error('MongoDB connection error:', err);
 });
 
 // Routes
+const usersRouter = require('./routes/users');
 const postsRouter = require('./routes/posts');
+const boardsRouter = require('./routes/boards');
 
 // API Routes - Put these BEFORE the catch-all route
+app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
+app.use('/api/boards', boardsRouter);
 
 // API test endpoint
 app.get('/api/test', async (req, res) => {
@@ -96,10 +112,4 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('User disconnected');
     });
-});
-
-// Start server
-const PORT = process.env.PORT || 10000;
-httpServer.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on port ${PORT}`);
 }); 

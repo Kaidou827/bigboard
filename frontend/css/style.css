@@ -20,6 +20,7 @@ body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
     margin: 0;
+    overflow-x: hidden;
 }
 
 .container {
@@ -30,12 +31,10 @@ body {
 
 .main-container {
     display: grid;
-    grid-template-columns: 240px 1fr 280px;
-    gap: 20px;
-    max-width: 1400px;
+    grid-template-columns: 275px minmax(600px, 680px) 350px;
+    gap: 0;
     margin: 0 auto;
-    padding: 20px 0;
-    min-height: 100vh;
+    max-width: 1305px;
 }
 
 /* Sidebar Styles */
@@ -43,23 +42,21 @@ body {
     position: sticky;
     top: 0;
     height: 100vh;
-    background-color: var(--bg-secondary);
-    padding: 20px 15px;
-    border-right: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    padding: 0 20px;
     display: flex;
     flex-direction: column;
-    border-radius: 0 20px 20px 0;
-    margin-right: 10px;
 }
 
 .sidebar-header {
-    margin-bottom: 40px;
-    padding: 10px 12px;
+    margin-bottom: 30px;
+    padding: 25px 12px;
 }
 
 .logo {
     height: 32px;
     width: auto;
+    margin-top: 10px;
 }
 
 .sidebar ul {
@@ -75,14 +72,15 @@ body {
 .sidebar a {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
+    padding: 12px;
     text-decoration: none;
     color: var(--text-secondary);
-    border-radius: 12px;
+    border-radius: 9999px;
     transition: all 0.2s ease;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 1.2rem;
     margin: 2px 0;
+    width: fit-content;
 }
 
 .sidebar a:hover {
@@ -117,8 +115,8 @@ body {
 .main-content {
     border-left: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color);
-    padding: 20px;
-    margin-left: -10px;
+    padding: 20px 30px;
+    background-color: var(--bg-primary);
 }
 
 .post-prompt {
@@ -317,21 +315,22 @@ body {
     position: sticky;
     top: 20px;
     height: fit-content;
-    padding-right: 20px;
+    padding: 15px;
+    background-color: var(--bg-primary);
 }
 
 .trending-boards {
     background-color: var(--bg-secondary);
     border-radius: 12px;
-    padding: 20px;
-    border: 1px solid var(--border-color);
+    padding: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .trending-boards h3 {
     color: var(--text-primary);
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
 }
 
 .trending-boards ul {
@@ -340,31 +339,42 @@ body {
 }
 
 .trending-boards li {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.trending-boards li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .trending-boards a {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     text-decoration: none;
     color: var(--text-primary);
-    padding: 10px;
+    padding: 8px 12px;
     border-radius: 8px;
     transition: background-color 0.2s;
 }
 
 .trending-boards a:hover {
     background-color: var(--bg-primary);
+    transform: translateX(4px);
 }
 
 .board-name {
     font-weight: 500;
     color: var(--text-primary);
+    font-size: 0.9rem;
 }
 
 .post-count {
     color: var(--text-secondary);
-    font-size: 0.875rem;
+    font-size: 0.8rem;
 }
 
 /* Trending Posts Styles */
@@ -940,6 +950,13 @@ body {
     color: var(--text-primary);
     font-size: 1rem;
     width: 100%;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239ca3af' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 12px) center;
+    padding-right: 35px;
 }
 
 .board-select:focus {
@@ -950,4 +967,105 @@ body {
 .board-select option {
     background-color: var(--bg-primary);
     color: var(--text-primary);
+}
+
+/* Profile Styles */
+.profile-header {
+    margin-bottom: 30px;
+}
+
+.profile-form-container {
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile-picture-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#profilePreview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid var(--accent-color);
+}
+
+.upload-btn {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.upload-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 6px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.save-btn {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.save-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Add a wrapper div around main-container in the HTML */
+.page-wrapper {
+    padding: 0 40px;
+    min-height: 100vh;
+    background-color: var(--bg-primary);
 } 

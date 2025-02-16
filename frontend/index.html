@@ -9,146 +9,148 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 </head>
 <body>
-    <div class="main-container">
-        <!-- Mobile Header -->
-        <header class="mobile-header">
-            <div class="mobile-logo">
-                <img src="assets/Icons/Icon-white.png" alt="BigBoard">
-            </div>
-        </header>
-        <!-- Left Sidebar -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <img src="assets/Icons/Icon-white.png" alt="BigBoard" class="logo">
-            </div>
-            <ul>
-                <li><a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
-                <li><a href="boards.html"><i class="fas fa-compass"></i><span>Boards</span></a></li>
-                <li><a href="#"><i class="fas fa-bookmark"></i><span>Bookmarks</span></a></li>
-                <li><a href="#"><i class="fas fa-heart"></i><span>Likes</span></a></li>
-                <li><a href="#"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                <!-- Auth links -->
-                <li class="auth-links">
-                    <!-- Show when not logged in -->
-                    <div id="login-register">
-                        <a href="#" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i>Login</a>
-                        <a href="#" onclick="showRegisterModal()" class="register-link"><i class="fas fa-user-plus"></i>Register</a>
-                    </div>
-                    <!-- Show when logged in -->
-                    <div id="user-info" style="display: none;">
-                        <span id="username" class="username"></span>
-                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
-                    </div>
-                </li>
-            </ul>
-            
-            <!-- Add a spacer and settings at bottom -->
-            <div style="flex-grow: 1;"></div>
-            <ul>
-                <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
-            </ul>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Post View (hidden by default) -->
-            <div id="post-view" style="display: none;">
-                <!-- Back button -->
-                <button onclick="showMainFeed()" class="back-button">
-                    <i class="fas fa-arrow-left"></i> Back to Feed
-                </button>
-
-                <!-- Selected post will be shown here -->
-                <div id="post-detail"></div>
-                
-                <!-- Simple reply form -->
-                <div class="reply-form">
-                    <form id="replyForm" class="post-form">
-                        <textarea id="replyContent" placeholder="Reply..." required></textarea>
-                        <div class="post-form-footer">
-                            <input type="text" id="replyAuthor" placeholder="Name (optional)">
-                            <button type="submit">Reply</button>
-                        </div>
-                    </form>
+    <div class="page-wrapper">
+        <div class="main-container">
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <div class="mobile-logo">
+                    <img src="assets/Icons/Icon-white.png" alt="BigBoard">
                 </div>
-
-                <!-- Replies -->
-                <div id="replies" class="replies-thread"></div>
-            </div>
-
-            <!-- Main Feed View -->
-            <div id="main-feed">
-                <div class="post-prompt">
-                    <h2>What's new?</h2>
-                    <form id="postForm" class="post-form">
-                        <div class="post-inputs">
-                            <select id="board" required class="board-select">
-                                <option value="">Select a Board</option>
-                            </select>
-                            <input type="text" id="title" placeholder="Post Title" required>
-                            <textarea id="content" placeholder="Share your thoughts..." required></textarea>
-                        </div>
-                        
-                        <div class="post-options">
-                            <div class="image-upload-section">
-                                <label for="image" class="image-upload-btn">
-                                    <i class="fas fa-image"></i> Add Image
-                                </label>
-                                <input type="file" id="image" accept="image/*" style="display: none;">
-                            </div>
-                            <div id="image-preview"></div>
-                        </div>
-                        
-                        <div class="post-form-footer">
-                            <input type="text" id="author" placeholder="Author (optional)">
-                            <button type="submit">Post</button>
-                        </div>
-                    </form>
+            </header>
+            <!-- Left Sidebar -->
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <img src="assets/Icons/Icon-white.png" alt="BigBoard" class="logo">
                 </div>
-
-                <div class="trending-posts">
-                    <h3>Newest Posts</h3>
-                    <div class="posts" id="posts">
-                        <!-- Posts will be loaded dynamically -->
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- Right Sidebar -->
-        <aside class="trending-sidebar">
-            <div class="stats-card">
-                <h3>Statistics</h3>
-                <div class="stat-item">
-                    <span class="stat-label">Live Posts</span>
-                    <span id="post-counter" class="stat-value">0</span>
-                </div>
-            </div>
-            <div class="trending-boards">
-                <h3>Trending Boards</h3>
                 <ul>
-                    <li>
-                        <a href="#">
-                            <span class="board-name">/technology</span>
-                            <span class="post-count">2.5k posts</span>
-                        </a>
+                    <li><a href="#" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
+                    <li><a href="boards.html"><i class="fas fa-compass"></i><span>Boards</span></a></li>
+                    <li><a href="#"><i class="fas fa-bookmark"></i><span>Bookmarks</span></a></li>
+                    <li><a href="#"><i class="fas fa-heart"></i><span>Likes</span></a></li>
+                    <li><a href="#"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <!-- Auth links -->
+                    <li class="auth-links">
+                        <!-- Show when not logged in -->
+                        <div id="login-register">
+                            <a href="#" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i>Login</a>
+                            <a href="#" onclick="showRegisterModal()" class="register-link"><i class="fas fa-user-plus"></i>Register</a>
+                        </div>
+                        <!-- Show when logged in -->
+                        <div id="user-info" style="display: none;">
+                            <span id="username" class="username"></span>
+                            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                        </div>
                     </li>
-                    <li>
-                        <a href="#">
-                            <span class="board-name">/gaming</span>
-                            <span class="post-count">1.8k posts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="board-name">/movies</span>
-                            <span class="post-count">1.2k posts</span>
-                        </a>
-                    </li>
-                    <!-- Add more trending boards as needed -->
                 </ul>
-            </div>
-        </aside>
+                
+                <!-- Add a spacer and settings at bottom -->
+                <div style="flex-grow: 1;"></div>
+                <ul>
+                    <li><a href="#"><i class="fas fa-cog"></i>Settings</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Post View (hidden by default) -->
+                <div id="post-view" style="display: none;">
+                    <!-- Back button -->
+                    <button onclick="showMainFeed()" class="back-button">
+                        <i class="fas fa-arrow-left"></i> Back to Feed
+                    </button>
+
+                    <!-- Selected post will be shown here -->
+                    <div id="post-detail"></div>
+                    
+                    <!-- Simple reply form -->
+                    <div class="reply-form">
+                        <form id="replyForm" class="post-form">
+                            <textarea id="replyContent" placeholder="Reply..." required></textarea>
+                            <div class="post-form-footer">
+                                <input type="text" id="replyAuthor" placeholder="Name (optional)">
+                                <button type="submit">Reply</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Replies -->
+                    <div id="replies" class="replies-thread"></div>
+                </div>
+
+                <!-- Main Feed View -->
+                <div id="main-feed">
+                    <div class="post-prompt">
+                        <h2>What's new?</h2>
+                        <form id="postForm" class="post-form">
+                            <div class="post-inputs">
+                                <select id="board" required class="board-select">
+                                    <option value="">Select a Board</option>
+                                </select>
+                                <input type="text" id="title" placeholder="Post Title" required>
+                                <textarea id="content" placeholder="Share your thoughts..." required></textarea>
+                            </div>
+                            
+                            <div class="post-options">
+                                <div class="image-upload-section">
+                                    <label for="image" class="image-upload-btn">
+                                        <i class="fas fa-image"></i> Add Image
+                                    </label>
+                                    <input type="file" id="image" accept="image/*" style="display: none;">
+                                </div>
+                                <div id="image-preview"></div>
+                            </div>
+                            
+                            <div class="post-form-footer">
+                                <input type="text" id="author" placeholder="Author (optional)">
+                                <button type="submit">Post</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="trending-posts">
+                        <h3>Newest Posts</h3>
+                        <div class="posts" id="posts">
+                            <!-- Posts will be loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="trending-sidebar">
+                <div class="stats-card">
+                    <h3>Statistics</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">Live Posts</span>
+                        <span id="post-counter" class="stat-value">0</span>
+                    </div>
+                </div>
+                <div class="trending-boards">
+                    <h3>Trending Boards</h3>
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <span class="board-name">/technology</span>
+                                <span class="post-count">2.5k posts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="board-name">/gaming</span>
+                                <span class="post-count">1.8k posts</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="board-name">/movies</span>
+                                <span class="post-count">1.2k posts</span>
+                            </a>
+                        </li>
+                        <!-- Add more trending boards as needed -->
+                    </ul>
+                </div>
+            </aside>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>

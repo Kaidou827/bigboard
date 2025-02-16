@@ -389,6 +389,8 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
+    console.log('Attempting login with:', { username });
+
     try {
         const response = await fetch(`${API_URL}/users/login`, {
             method: 'POST',
@@ -398,14 +400,17 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
             body: JSON.stringify({ username, password })
         });
 
+        console.log('Login response:', response);
         if (response.ok) {
             const user = await response.json();
+            console.log('Login successful:', user);
             localStorage.setItem('user', JSON.stringify(user));
             updateAuthUI(user);
             document.getElementById('login-modal').classList.remove('active');
             document.getElementById('login-form').reset();
         } else {
             const error = await response.json();
+            console.log('Login failed:', error);
             alert(error.message);
         }
     } catch (error) {
@@ -477,16 +482,32 @@ if (user) {
 // Load boards into selector
 async function loadBoardSelector() {
     try {
+        console.log('Loading boards for selector...');
         const response = await fetch(`${API_URL}/boards`);
+        console.log('Boards response:', response);
         const boards = await response.json();
+        console.log('Loaded boards:', boards);
         const selector = document.getElementById('board');
+        
+        if (!selector) {
+            console.error('Board selector element not found!');
+            return;
+        }
+        
+        // Clear existing options except the first one
+        while (selector.options.length > 1) {
+            selector.remove(1);
+        }
         
         boards.forEach(board => {
             const option = document.createElement('option');
             option.value = board.name;
             option.textContent = `/${board.name}`;
+            console.log('Adding board option:', board.name);
             selector.appendChild(option);
         });
+        
+        console.log('Final selector options:', selector.options.length);
     } catch (error) {
         console.error('Error loading boards:', error);
     }

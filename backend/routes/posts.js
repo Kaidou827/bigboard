@@ -5,15 +5,19 @@ const Post = require('../models/Post');
 // Get all posts
 router.get('/', async (req, res) => {
     try {
+        console.log('Fetching all posts...');
         const posts = await Post.find().sort({ createdAt: -1 });
+        console.log('Found posts:', posts);
         res.json(posts);
     } catch (err) {
+        console.error('Error fetching posts:', err);
         res.status(500).json({ message: err.message });
     }
 });
 
 // Create a post
 router.post('/', async (req, res) => {
+    console.log('Received post data:', req.body);
     const post = new Post({
         title: req.body.title,
         content: req.body.content,
@@ -23,10 +27,11 @@ router.post('/', async (req, res) => {
 
     try {
         const newPost = await post.save();
-        // Emit the new post to all connected clients
+        console.log('Created new post:', newPost);
         req.app.get('io').emit('newPost', newPost);
         res.status(201).json(newPost);
     } catch (err) {
+        console.error('Error creating post:', err);
         res.status(400).json({ message: err.message });
     }
 });

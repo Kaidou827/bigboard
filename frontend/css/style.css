@@ -321,6 +321,18 @@ body {
     font-size: 0.875rem;
 }
 
+/* Trending Posts Styles */
+.trending-posts {
+    /* Change class name if you want, but not necessary */
+}
+
+.trending-posts h3 {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .main-container {

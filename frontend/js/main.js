@@ -1,5 +1,5 @@
-const API_URL = 'http://localhost:5001/api';
-const socket = io('http://localhost:5001');
+const API_URL = 'https://bigboard-backend.onrender.com/api';
+const socket = io('https://bigboard-backend.onrender.com');
 
 // Socket event listeners
 socket.on('newPost', (post) => {
@@ -13,8 +13,10 @@ socket.on('updatePost', (updatedPost) => {
 // Load posts
 async function loadPosts() {
     try {
+        console.log('Fetching posts...');
         const response = await fetch(`${API_URL}/posts`);
         const posts = await response.json();
+        console.log('Received posts:', posts);
         displayPosts(posts);
     } catch (error) {
         console.error('Error loading posts:', error);
@@ -25,7 +27,10 @@ async function loadPosts() {
 function displayPosts(posts) {
     const postsContainer = document.getElementById('posts');
     postsContainer.innerHTML = '';
-    posts.forEach(post => addPostToDOM(post));
+    // Sort posts by date, newest first
+    const sortedPosts = posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    console.log('Displaying sorted posts:', sortedPosts);
+    sortedPosts.forEach(post => addPostToDOM(post));
 }
 
 // Add a single post to DOM
@@ -81,12 +86,16 @@ function createPostElement(post) {
 // Handle form submission
 document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    console.log('Form submitted');
     
     const formData = {
         title: document.getElementById('title').value,
         content: document.getElementById('content').value,
-        author: document.getElementById('author').value || 'Anonymous'
+        author: document.getElementById('author').value || 'Anonymous',
+        board: 'general' // Add default board
     };
+
+    console.log('Sending data:', formData);
 
     try {
         const response = await fetch(`${API_URL}/posts`, {
@@ -97,8 +106,16 @@ document.getElementById('postForm').addEventListener('submit', async (e) => {
             body: JSON.stringify(formData)
         });
 
+        console.log('Response:', response);
+
         if (response.ok) {
+            const data = await response.json();
+            console.log('Post created:', data);
             document.getElementById('postForm').reset();
+            // Reload posts after creating a new one
+            loadPosts();
+        } else {
+            console.error('Error response:', await response.text());
         }
     } catch (error) {
         console.error('Error creating post:', error);

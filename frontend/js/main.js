@@ -1,5 +1,6 @@
 const API_URL = 'https://bigboard-backend.onrender.com/api';
 const socket = io('https://bigboard-backend.onrender.com');
+const VOTED_POSTS_KEY = 'votedPosts';
 
 // Socket event listeners
 socket.on('newPost', (post) => {
@@ -94,39 +95,49 @@ function createPostElement(post) {
     return postDiv;
 }
 
-// Handle form submission
+// Add image preview handling
+document.getElementById('image').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = `
+                <div class="preview-container">
+                    <img src="${e.target.result}" alt="Preview">
+                    <button type="button" class="remove-image">×</button>
+                </div>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Update form submission
 document.getElementById('postForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    console.log('Form submitted');
     
-    const formData = {
-        title: document.getElementById('title').value,
-        content: document.getElementById('content').value,
-        author: document.getElementById('author').value || 'Anonymous',
-        board: 'general' // Add default board
-    };
-
-    console.log('Sending data:', formData);
+    const formData = new FormData();
+    formData.append('title', document.getElementById('title').value);
+    formData.append('content', document.getElementById('content').value);
+    formData.append('author', document.getElementById('author').value || 'Anonymous');
+    
+    const imageFile = document.getElementById('image').files[0];
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
 
     try {
         const response = await fetch(`${API_URL}/posts`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            body: formData
         });
-
-        console.log('Response:', response);
 
         if (response.ok) {
             const data = await response.json();
-            console.log('Post created:', data);
             document.getElementById('postForm').reset();
-            // Reload posts after creating a new one
+            document.getElementById('image-preview').innerHTML = '';
             loadPosts();
-        } else {
-            console.error('Error response:', await response.text());
         }
     } catch (error) {
         console.error('Error creating post:', error);
@@ -136,12 +147,32 @@ document.getElementById('postForm').addEventListener('submit', async (e) => {
 // Handle vote
 async function handleVote(postId) {
     try {
-        await fetch(`${API_URL}/posts/${postId}/vote`, {
+        // Check if user has already voted
+        const votedPosts = JSON.parse(localStorage.getItem(VOTED_POSTS_KEY) || '[]');
+        if (votedPosts.includes(postId)) {
+            console.log('Already voted on this post');
+            return;
+        }
+
+        const response = await fetch(`${API_URL}/posts/${postId}/vote`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
+
+        if (response.ok) {
+            // Save voted post to localStorage
+            votedPosts.push(postId);
+            localStorage.setItem(VOTED_POSTS_KEY, JSON.stringify(votedPosts));
+            
+            // Update UI to show voted state
+            const voteBtn = document.querySelector(`[data-post-id="${postId}"] .vote-btn`);
+            if (voteBtn) {
+                voteBtn.classList.add('voted');
+                voteBtn.disabled = true;
+            }
+        }
     } catch (error) {
         console.error('Error voting:', error);
     }

@@ -40,6 +40,10 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    image: {
+        type: String,  // This will store the image URL
+        required: false
     }
 });
 

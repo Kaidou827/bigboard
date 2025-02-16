@@ -64,6 +64,13 @@
                     <h2>What's new?</h2>
                     <form id="postForm" class="post-form">
                         <textarea id="content" placeholder="Share your thoughts..." required></textarea>
+                        <div class="image-upload">
+                            <label for="image">
+                                <i class="fas fa-image"></i> Add Image
+                            </label>
+                            <input type="file" id="image" accept="image/*" style="display: none;">
+                            <div id="image-preview"></div>
+                        </div>
                         <div class="post-form-footer">
                             <input type="text" id="title" placeholder="Post Title" required>
                             <input type="text" id="author" placeholder="Author (optional)">

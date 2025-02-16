@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
 const app = express();
@@ -27,6 +29,21 @@ app.set('io', io);
 // Add this line before mongoose.connect
 mongoose.set('strictQuery', false);
 
+// Configure Cloudinary
+cloudinary.config({ 
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET 
+});
+
+// Configure Multer for file uploads
+const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5MB limit
+    }
+});
+
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/bigboard', {
     useNewUrlParser: true,
@@ -39,9 +56,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/bigboard', {
 
 // Routes
 const postsRouter = require('./routes/posts');
+
+// API Routes - Put these BEFORE the catch-all route
 app.use('/api/posts', postsRouter);
 
-// Add this after your existing routes
+// API test endpoint
 app.get('/api/test', async (req, res) => {
     try {
         // Test database connection
@@ -60,7 +79,12 @@ app.get('/api/test', async (req, res) => {
     }
 });
 
-// Add this near your other routes
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', message: 'BigBoard API is running' });
+});
+
+// Catch-all route should be LAST
 app.get('/', (req, res) => {
     res.json({ status: 'ok', message: 'BigBoard API is running' });
 });
@@ -75,7 +99,7 @@ io.on('connection', (socket) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
-httpServer.listen(PORT, () => {
+const PORT = process.env.PORT || 10000;
+httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 }); 

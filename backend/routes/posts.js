@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary').v2;
+const { Readable } = require('stream');
+const multer = require('multer');
 
 // Get all posts
 router.get('/', async (req, res) => {
@@ -17,18 +20,32 @@ router.get('/', async (req, res) => {
 });
 
 // Create a post
-router.post('/', async (req, res) => {
-    console.log('Received post data:', req.body);
-    const post = new Post({
-        title: req.body.title,
-        content: req.body.content,
-        author: req.body.author || 'Anonymous',
-        board: req.body.board || 'general'
-    });
-
+router.post('/', multer().single('image'), async (req, res) => {
     try {
+        let imageUrl = null;
+        
+        if (req.file) {
+            // Upload to Cloudinary
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: "bigboard" },
+                (error, result) => {
+                    if (error) throw error;
+                    imageUrl = result.secure_url;
+                }
+            );
+
+            Readable.from(req.file.buffer).pipe(stream);
+        }
+
+        const post = new Post({
+            title: req.body.title,
+            content: req.body.content,
+            author: req.body.author || 'Anonymous',
+            board: req.body.board || 'general',
+            image: imageUrl
+        });
+
         const newPost = await post.save();
-        console.log('Created new post:', newPost);
         req.app.get('io').emit('newPost', newPost);
         res.status(201).json(newPost);
     } catch (err) {

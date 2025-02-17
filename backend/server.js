@@ -51,8 +51,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/bigboard', {
 }).then(() => {
     console.log('Connected to MongoDB successfully');
     // Start server AFTER MongoDB connects
-    const PORT = process.env.PORT || 5001;
-    httpServer.listen(PORT, () => {
+    const PORT = process.env.PORT || 5002;
+    httpServer.listen(PORT, '0.0.0.0', () => {
         console.log(`Server is running on port ${PORT}`);
     }).on('error', (err) => {
         if (err.code === 'EADDRINUSE') {

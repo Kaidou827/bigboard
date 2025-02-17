@@ -30,6 +30,7 @@ const postSchema = new mongoose.Schema({
     },
     board: {
         type: String,
+        required: true,
         default: 'general'
     },
     votes: {

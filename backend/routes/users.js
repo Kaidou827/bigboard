@@ -40,31 +40,42 @@ router.post('/register', async (req, res) => {
 
 // Login user
 router.post('/login', async (req, res) => {
+    console.log('Login attempt:', req.body);
     try {
         const { username, password } = req.body;
 
         // Find user
         const user = await User.findOne({ username });
+        console.log('Found user:', user);
+
         if (!user) {
+            console.log('User not found');
             return res.status(400).json({ message: 'User not found' });
         }
 
         // Check password
         const validPassword = await bcrypt.compare(password, user.password);
+        console.log('Password valid:', validPassword);
+
         if (!validPassword) {
+            console.log('Invalid password');
             return res.status(400).json({ message: 'Invalid password' });
         }
 
-        // Send user data (without password)
+        // Create a user object without the password
         const userResponse = {
             _id: user._id,
             username: user.username,
-            createdAt: user.createdAt
+            handle: user.handle,
+            displayName: user.displayName,
+            profilePicture: user.profilePicture
         };
 
+        console.log('Login successful, sending response:', userResponse);
         res.json(userResponse);
     } catch (err) {
-        res.status(400).json({ message: err.message });
+        console.error('Login error:', err);
+        res.status(500).json({ message: err.message });
     }
 });
 

@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
 const { Readable } = require('stream');
 const multer = require('multer');
+const Board = require('../models/Board');
 
 // Get all posts
 router.get('/', async (req, res) => {
@@ -46,6 +47,14 @@ router.post('/', multer().single('image'), async (req, res) => {
         });
 
         const newPost = await post.save();
+
+        // Increment board post count
+        await Board.findOneAndUpdate(
+            { name: post.board },
+            { $inc: { postCount: 1 } }
+        );
+
+        // Emit socket event for new post
         req.app.get('io').emit('newPost', newPost);
         res.status(201).json(newPost);
     } catch (err) {

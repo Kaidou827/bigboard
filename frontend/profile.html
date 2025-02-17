@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - BigBoard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Include the same header and sidebar as index.html -->
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="profile-header">
+                <h1>Profile Settings</h1>
+            </div>
+
+            <div class="profile-form-container">
+                <form id="profileForm" class="profile-form">
+                    <div class="profile-picture-section">
+                        <img id="profilePreview" src="assets/default-profile.png" alt="Profile Picture">
+                        <label for="profilePicture" class="upload-btn">
+                            <i class="fas fa-camera"></i> Change Picture
+                        </label>
+                        <input type="file" id="profilePicture" accept="image/*" style="display: none;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="handle">Handle</label>
+                        <input type="text" id="handle" placeholder="@username">
+                        <small>This is your unique identifier on BigBoard</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="displayName">Display Name</label>
+                        <input type="text" id="displayName" placeholder="Your name">
+                        <small>This is how your name will appear to others</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" placeholder="Tell us about yourself" maxlength="160"></textarea>
+                        <small><span id="bioCount">0</span>/160 characters</small>
+                    </div>
+
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/profile.js"></script>
+</body>
+</html> 

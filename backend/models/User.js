@@ -11,6 +11,22 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    handle: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
+    displayName: {
+        type: String
+    },
+    profilePicture: {
+        type: String,
+        default: 'default-profile.png'
+    },
+    bio: {
+        type: String,
+        maxLength: 160
+    },
     createdAt: {
         type: Date,
         default: Date.now
